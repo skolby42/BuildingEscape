@@ -44,7 +44,7 @@ private:
 	/*UPROPERTY(EditAnywhere)
 	float OpenYaw = 90.0f;*/
 
-	/*float DoorLastOpened = 0.0f;*/
+	float DoorLastOpened = 0.0f;
 
 	/*UPROPERTY(EditAnywhere)
 	float DoorOpenSpeed = 3.0f;*/
@@ -52,8 +52,8 @@ private:
 	/*UPROPERTY(EditAnywhere)
 	float DoorCloseSpeed = 6.0f;*/
 
-	/*UPROPERTY(EditAnywhere)
-	float DoorCloseDelay = 2.0f;*/
+	UPROPERTY(EditAnywhere)
+	float DoorCloseDelay = 2.0f;
 
 	UPROPERTY(EditAnywhere)
 	float DoorOpeningMass = 50.f;

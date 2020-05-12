@@ -38,10 +38,15 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	if (GetTotalMassOfActors() >= DoorOpeningMass)
 	{
 		OpenDoor(DeltaTime);
+		DoorLastOpened = GetWorld()->GetTimeSeconds();
 	}
 	else
 	{
-		CloseDoor(DeltaTime);
+		if (DoorLastOpened > 0)
+			UE_LOG(LogTemp, Warning, TEXT("%f %f"), DoorLastOpened, GetWorld()->GetTimeSeconds());
+
+		if (GetWorld()->GetTimeSeconds() >= DoorLastOpened + DoorCloseDelay)
+			CloseDoor(DeltaTime);
 	}
 }
 
