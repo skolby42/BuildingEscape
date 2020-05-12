@@ -7,6 +7,7 @@
 #include "Engine/TriggerVolume.h"
 #include "OpenDoor.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDoorEvent);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BUILDINGESCAPE_API UOpenDoor : public UActorComponent
@@ -30,23 +31,29 @@ public:
 	void FindAudioComponent();
 	void FindPressurePlate();
 
+	UPROPERTY(BlueprintAssignable)
+	FDoorEvent OnOpen;
+
+	UPROPERTY(BlueprintAssignable)
+	FDoorEvent OnClose;
+
 private:
-	float InitialYaw;
-	float CurrentYaw;
+	/*float InitialYaw;
+	float CurrentYaw;*/
 
-	UPROPERTY(EditAnywhere)
-	float OpenYaw = 90.0f;
+	/*UPROPERTY(EditAnywhere)
+	float OpenYaw = 90.0f;*/
 
-	float DoorLastOpened = 0.0f;
+	/*float DoorLastOpened = 0.0f;*/
 
-	UPROPERTY(EditAnywhere)
-	float DoorOpenSpeed = 3.0f;
+	/*UPROPERTY(EditAnywhere)
+	float DoorOpenSpeed = 3.0f;*/
 
-	UPROPERTY(EditAnywhere)
-	float DoorCloseSpeed = 6.0f;
+	/*UPROPERTY(EditAnywhere)
+	float DoorCloseSpeed = 6.0f;*/
 
-	UPROPERTY(EditAnywhere)
-	float DoorCloseDelay = 2.0f;
+	/*UPROPERTY(EditAnywhere)
+	float DoorCloseDelay = 2.0f;*/
 
 	UPROPERTY(EditAnywhere)
 	float DoorOpeningMass = 50.f;

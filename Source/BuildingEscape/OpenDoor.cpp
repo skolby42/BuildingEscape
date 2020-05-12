@@ -6,7 +6,7 @@
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/PlayerController.h"
-
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
 UOpenDoor::UOpenDoor()
@@ -22,9 +22,9 @@ void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	InitialYaw = GetOwner()->GetActorRotation().Yaw;
+	/*InitialYaw = GetOwner()->GetActorRotation().Yaw;
 	CurrentYaw = InitialYaw;
-	OpenYaw += InitialYaw;
+	OpenYaw += InitialYaw;*/
 
 	FindAudioComponent();
 	FindPressurePlate();
@@ -35,49 +35,58 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	float CurrentTime = GetWorld()->GetTimeSeconds();
 	if (GetTotalMassOfActors() >= DoorOpeningMass)
 	{
 		OpenDoor(DeltaTime);
-		DoorLastOpened = CurrentTime;
 	}
 	else
 	{
-		if (CurrentTime - DoorLastOpened > DoorCloseDelay)
-			CloseDoor(DeltaTime);
+		CloseDoor(DeltaTime);
 	}
 }
 
 void UOpenDoor::OpenDoor(float DeltaTime)
 {
-	CurrentYaw = FMath::FInterpTo(CurrentYaw, OpenYaw, DeltaTime, DoorOpenSpeed);
+	// Set rotation in blueprint timeline via delegate
+	OnOpen.Broadcast();
+
+	// Set rotation in code
+	/*CurrentYaw = FMath::FInterpTo(CurrentYaw, OpenYaw, DeltaTime, DoorOpenSpeed);
 	FRotator DoorRotation = GetOwner()->GetActorRotation();
 	DoorRotation.Yaw = CurrentYaw;
-	GetOwner()->SetActorRotation(DoorRotation);
+	GetOwner()->SetActorRotation(DoorRotation);*/
 
 	//UE_LOG(LogTemp, Warning, TEXT("%f"), CurrentYaw);
 
 	CloseDoorSoundPlayed = false;
 	if (AudioComponent && !OpenDoorSoundPlayed)
 	{
-		AudioComponent->Play();
+		UGameplayStatics::PlaySoundAtLocation(GetOwner(), AudioComponent->Sound, GetOwner()->GetActorLocation());
+
+		//AudioComponent->Play();
 		OpenDoorSoundPlayed = true;
 	}
 }
 
 void UOpenDoor::CloseDoor(float DeltaTime)
 {
-	CurrentYaw = FMath::FInterpTo(CurrentYaw, InitialYaw, DeltaTime, DoorCloseSpeed);
+	// Set rotation in blueprint timeline via delegate
+	OnClose.Broadcast();
+
+	// Set rotation in code
+	/*CurrentYaw = FMath::FInterpTo(CurrentYaw, InitialYaw, DeltaTime, DoorCloseSpeed);
 	FRotator DoorRotation = GetOwner()->GetActorRotation();
 	DoorRotation.Yaw = CurrentYaw;
-	GetOwner()->SetActorRotation(DoorRotation);
+	GetOwner()->SetActorRotation(DoorRotation);*/
 
 	//UE_LOG(LogTemp, Warning, TEXT("%f"), CurrentYaw);
 
 	OpenDoorSoundPlayed = false;
 	if (AudioComponent && !CloseDoorSoundPlayed)
 	{
-		AudioComponent->Play();
+		UGameplayStatics::PlaySoundAtLocation(GetOwner(), AudioComponent->Sound, GetOwner()->GetActorLocation());
+
+		//AudioComponent->Play();
 		CloseDoorSoundPlayed = true;
 	}
 }
