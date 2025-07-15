@@ -8,7 +8,7 @@ public class BuildingEscapeEditorTarget : TargetRules
 	public BuildingEscapeEditorTarget( TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
-		DefaultBuildSettings = BuildSettingsVersion.Latest;
+		DefaultBuildSettings = BuildSettingsVersion.V2;
 		ExtraModuleNames.AddRange( new string[] { "BuildingEscape" } );
 	}
 }
